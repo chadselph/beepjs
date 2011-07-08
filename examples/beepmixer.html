@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Beep Mixer</title>
+        <script src="../beep.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var counter = 1;
+            var model_widget_id = "sampler0";
+            var samplers = [];
+            function Sample(widget_id) {
+                var self = this;
+                this.div = document.getElementById(widget_id);
+                this.button = this.div.getElementsByClassName("start")[0];
+                this.button.onclick = function() { self.flip() };
+            }
+            Sample.prototype = {
+
+                start: function() {
+                    var self = this;
+                    function getAttr(name, ddefault) {
+                        var val = self.div.getElementsByClassName(name)[0].value;
+                        return parseFloat(val) || ddefault;
+                    }
+                    var f = getAttr("freq", 1000);
+                    var d = getAttr("duration", 1);
+                    var e = getAttr("every", 2);
+                    this.running = setInterval(function() {
+                        b = new Beep(22050);
+                        b.play(f, d, [Beep.utils.amplify(8000)]);
+                    }, 1000*e);
+                },
+
+                stop: function() {
+                    clearInterval(this.running);
+                    this.running = null;
+                },
+
+                flip: function () {
+                    if( this.running != null ) {
+                        this.stop();
+                        this.button.value = "Start";
+                    } else {
+                        this.start();
+                        this.button.value = "Stop";
+                    }
+                }
+
+            }
+            function add_sample() {
+                var widget_id = "sampler"+(counter++);
+                var samplers = document.getElementById("samplers");
+                var mine = document.getElementById(model_widget_id).cloneNode(true);
+                mine.id = widget_id;
+                samplers.appendChild(mine);
+                return new Sample(widget_id);
+            }
+            window.onload = function() {
+                add_sample();
+            }
+        </script>
+    </head>
+    <body>
+        <!-- html templates -->
+        <div style="display: none">
+            <div class="sample" id="sampler0">
+                Frequency: <input type="text" class="freq" value="1000">
+                Duration <input type="text" class="duration" value="1">
+                Play Every<input type="text" class="every" value="2">
+                <input type="button" value="Start" class="start">
+            </div>
+        </div>
+        <h1>Beep Mixer</h1>
+
+        <div id="samplers"> </div>
+        <button onclick="add_sample()">Add</span>
+    </body>
+</html>

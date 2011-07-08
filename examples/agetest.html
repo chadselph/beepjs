@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Age Test</title>
+        <script src="../beep.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var time = 0.1;
+            var samplerate = 44100;
+            var freq = sampleate/2;
+            var proc = setInterval(function () {
+                freq-= 100;
+                new Beep(samplerate).play(freq, time, [Beep.utils.amplify(8000)]);
+                console.log(freq);
+            }, time+250);
+            function compute_age(freq) {
+                return 42;
+            }
+            function heard() {
+                clearInterval(proc);
+                var age = compute_age(freq);
+                document.getElementById('age').innerHTML = age+" years old ("+freq+" hertz)";
+            }
+
+        </script>
+    </head>
+    <body>
+        <h1>Age Test</h1>
+        <div class="sample" id="age">
+            Press the button when you hear a sound.
+            <input type="button" value="Heard it." onclick="heard()">
+        </div>
+    </body>
+</html>
