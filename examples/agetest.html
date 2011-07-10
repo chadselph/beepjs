@@ -6,7 +6,7 @@
         <script type="text/javascript">
             var time = 0.1;
             var samplerate = 44100;
-            var freq = sampleate/2;
+            var freq = samplerate/2;
             var proc = setInterval(function () {
                 freq-= 100;
                 new Beep(samplerate).play(freq, time, [Beep.utils.amplify(8000)]);
